@@ -1,3 +1,5 @@
+![Social preview for React DataTable Control](assets/social-preview-image.png)
+
 # react-datatable-control
 
 A React 18 and Fluent UI v9 data table for Microsoft Power Pages. It renders the rows of a Dataverse entity view as a searchable, sortable, paged table, with row selection, row actions, toolbar buttons, status badges and CSV/Excel export. It ships as one script file and one stylesheet, with no runtime dependency on the page.
