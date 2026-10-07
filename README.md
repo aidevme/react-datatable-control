@@ -57,12 +57,12 @@ npm run build
 npm test
 ```
 
-The build writes `dist/hso-data-table.min.js` and `dist/hso-data-table.min.css`. Upload both as web files on your site and load them in the page template:
+The build writes `dist/aidevme-data-table.min.js` and `dist/aidevme-data-table.min.css`. Upload both as web files on your site and load them in the page template:
 
 ```html
-<link rel="stylesheet" href="/styles/hso-data-table.min.css" />
+<link rel="stylesheet" href="/styles/aidevme-data-table.min.css" />
 <script src="/scripts/hso-data-table-config.js" defer></script>  <!-- optional config, load before the bundle -->
-<script src="/scripts/hso-data-table.min.js" defer></script>
+<script src="/scripts/aidevme-data-table.min.js" defer></script>
 ```
 
 Dataverse blocks `.js` attachments on web files. Upload the script as a file without an extension (MIME `application/octet-stream`) and give the web file a Partial URL that ends in `.js`.
