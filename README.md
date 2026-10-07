@@ -61,7 +61,7 @@ The build writes `dist/aidevme-data-table.min.js` and `dist/aidevme-data-table.m
 
 ```html
 <link rel="stylesheet" href="/styles/aidevme-data-table.min.css" />
-<script src="/scripts/hso-data-table-config.js" defer></script>  <!-- optional config, load before the bundle -->
+<script src="/scripts/aidevme-data-table-config.js" defer></script>  <!-- optional config, load before the bundle -->
 <script src="/scripts/aidevme-data-table.min.js" defer></script>
 ```
 
@@ -72,22 +72,22 @@ Dataverse blocks `.js` attachments on web files. Upload the script as a file wit
 ## How it works
 
 1. Your Liquid web template writes the rows of an entity view as JSON inside a `<script type="application/json">` element, next to an empty mount element.
-2. When the page loads, the bundle finds every element with `data-hso-grid`, reads its JSON, and mounts a table into it.
+2. When the page loads, the bundle finds every element with `data-aidevme-grid`, reads its JSON, and mounts a table into it.
 3. Each cell is resolved once (display text, sort key, filter text) and the table sorts, filters and pages in the browser.
 
 ### Markup
 
 ```html
-<div id="hso-grid-Orders" data-hso-grid>
-  <div class="hso-dt-preload" role="status">Loading…</div>
+<div id="aidevme-grid-Orders" data-aidevme-grid>
+  <div class="aidevme-dt-preload" role="status">Loading…</div>
 </div>
 
-<script type="application/json" data-hso-grid-data="Orders">
+<script type="application/json" data-aidevme-grid-data="Orders">
 { ... see the data contract below ... }
 </script>
 ```
 
-The id after `hso-grid-` and the value of `data-hso-grid-data` must match. Use a different id for every grid on a page. For grids added later, call `HsoDataTable.mountAll(scope)`.
+The id after `aidevme-grid-` and the value of `data-aidevme-grid-data` must match. Use a different id for every grid on a page. For grids added later, call `AiDevMeDataTable.mountAll(scope)`.
 
 ### Data contract
 
@@ -124,10 +124,10 @@ The id after `hso-grid-` and the value of `data-hso-grid-data` must match. Use a
 
 ## Configuration
 
-Configuration is optional. Without it, headers and types come from the view's own metadata. To change presentation, set `window.HsoDataTableConfig` before the bundle loads. Keys are `<entity logical name>|<view name>` and must match the JSON's `logicalName` and `viewName`.
+Configuration is optional. Without it, headers and types come from the view's own metadata. To change presentation, set `window.AIDevMeDataTableConfig` before the bundle loads. Keys are `<entity logical name>|<view name>` and must match the JSON's `logicalName` and `viewName`.
 
 ```javascript
-window.HsoDataTableConfig = {
+window.AIDevMeDataTableConfig = {
   'new_order|Open orders': {
     title: 'Open orders',
     selectable: true,
@@ -180,9 +180,9 @@ Other options (search box, export, selection, rows per page, default sort and so
 ## JavaScript API
 
 ```javascript
-const grid = HsoDataTable.get('Orders');   // a mounted grid, by id
-HsoDataTable.mount(el, payload);            // mount manually
-HsoDataTable.mountAll(scope);               // mount grids added later
+const grid = AIDevMeDataTable.get('Orders');   // a mounted grid, by id
+AIDevMeDataTable.mount(el, payload);            // mount manually
+AIDevMeDataTable.mountAll(scope);               // mount grids added later
 
 grid.setPayload(data);       // replace the data (or { error: '...' })
 grid.setLoading(true);       // show the loading state
@@ -201,15 +201,15 @@ Events bubble from the grid element:
 
 | Event | `detail` |
 |---|---|
-| `hso-data-table:action` | `{ id, actionId, rowId, rowIds }` for a row action or toolbar button |
-| `hso-data-table:ready` | `{ total }` |
-| `hso-data-table:rowcount` | `{ total, filtered }` |
-| `hso-data-table:statechange` | `{ sort, search, page, rowsPerPage }` |
-| `hso-data-table:selectionchange` | the selected ids (see `src/types.ts`) |
-| `hso-data-table:export` | export details (see `src/types.ts`) |
+| `aidevme-data-table:action` | `{ id, actionId, rowId, rowIds }` for a row action or toolbar button |
+| `aidevme-data-table:ready` | `{ total }` |
+| `aidevme-data-table:rowcount` | `{ total, filtered }` |
+| `aidevme-data-table:statechange` | `{ sort, search, page, rowsPerPage }` |
+| `aidevme-data-table:selectionchange` | the selected ids (see `src/types.ts`) |
+| `aidevme-data-table:export` | export details (see `src/types.ts`) |
 
 ```javascript
-document.addEventListener('hso-data-table:action', (e) => {
+document.addEventListener('aidevme-data-table:action', (e) => {
   if (e.detail.actionId === 'approve') {
     // open a dialog or call the Web API for e.detail.rowId
   }
@@ -220,7 +220,7 @@ Writes (Web API calls, dialogs, redirects) belong in your page script. The contr
 
 ## Localisation
 
-UI text comes from `src/i18n/labels.ts`. Override any label with `window.HsoDataTableLabels` before the bundle loads, for example with values read from Power Pages content snippets. Dates and numbers follow the browser or `window.HsoDataTableLocale`.
+UI text comes from `src/i18n/labels.ts`. Override any label with `window.AIDevMeDataTableLabels` before the bundle loads, for example with values read from Power Pages content snippets. Dates and numbers follow the browser or `window.AIDevMeDataTableLocale`.
 
 ---
 
@@ -229,7 +229,7 @@ UI text comes from `src/i18n/labels.ts`. Override any label with `window.HsoData
 ```
 src/
   index.ts            auto-mount and public API
-  HsoDataTable.tsx    root component (toolbar, table, footer)
+  AIDevMeDataTable.tsx    root component (toolbar, table, footer)
   types.ts            options, column and action types
   core/               pure data pipeline (parse, resolve cells, sort/filter/page, format, export)
   components/         toolbar, header cell, cell renderers, footer, empty/loading/error states
